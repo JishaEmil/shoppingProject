@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+
+      {{product.desc|truncatewords:155}}
+
+{% endblock %}
+{% block title %}
+   {% if category %}
+      {{product.name}} - Fresh Stores
+
+    {% endif %}
+{% endblock %}
+{% block content %}
+<div>
+    <div class="p-2">
+        <p><a href="{% url 'shop:allProdCat' %}">Home</a>|<a href="{{product.category.get_url}}">{{product.category}}</a>|{{product.name}}</p>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-6">
+
+            <img src="{{product.img.url}}" alt="{{product.name}}" width="100%" height="auto">
+
+    </div>
+    <div class="col-md-6">
+
+            <h1>{{product.name}}</h1>
+            <p>{{product.price}}</p>
+            <p>{{product.desc}}</p>
+            {% if product.stock <= 0 %}
+            <p><b>Out of stock</b></p>
+            {% else %}
+            <a href="{% url 'cart:add_cart' product.id %}" class="btn btn-secondary">Add to cart</a>
+            {% endif %}
+      
+    </div>
+</div>
+{% endblock %}

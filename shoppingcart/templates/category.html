@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+   {% if category %}
+      {{category.desc|truncatewords:155}}
+   {% else %}
+      Welcome to OZ store where you can buy different items...
+    {% endif %}
+{% endblock %}
+{% block title %}
+   {% if category %}
+      {{category.name}}
+   {% else %}
+     See our new collections
+    {% endif %}
+{% endblock %}
+{% block content %}
+{% if category %}
+<div>
+    <div>
+        <p><a href="{% url 'shop:allProdCat' %}">Our All Products</a></p>
+    </div>
+</div>
+ {% endif %}
+{% if category %}
+<div>
+    <img src="{{category.img.url}}" alt="{{category.name}}" width="100%" height="auto">
+</div>
+<div>
+    <h1 class="head-class"> {{category.name}}</h1>
+    <p class="font-class">{{category.desc}}</p>
+
+</div><br>
+{% else %}
+<div>
+    <img src="{% static 'image/banner.png' %}" alt="our product" width="100%" height="10%">
+</div>
+<div >
+    <h1 class="head-class"> Our product collections</h1>
+    <p class="font-class">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+
+</div><br>
+{% endif %}
+<div class="row ">
+{% for product in products.object_list %}
+
+<div class="card mb-3 shadow" style="width: 15rem;margin-right:10px;">
+    <a href="{{product.get_url}}"><img class="card-img-top" src="{{product.img.url}}" alt="{{product.name}}" height="200px"></a>
+  <div class="card-body">
+    <h5 class="card-title" style="text-align:center;">{{product.name}}</h5>
+    <p class="card-text" style="text-align:center;"> {{product.price}}</p>
+<!--    <a href="#" class="btn btn-primary">Go somewhere</a>-->
+  </div>
+</div>
+ {% endfor %}
+    </div>
+<div class="max-auto mb-3">
+    {% if products.paginator.num_pages > 1 %}
+
+   <hr>
+    <div class="text-center">
+        {% for pg in products.paginator.page_range %}
+        <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}"> {{pg}}</a>
+        {% endfor %}
+    </div>
+     {% endif %}
+
+</div>
+
+{% endblock %}
